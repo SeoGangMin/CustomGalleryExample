@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/cell_spacing">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/thumbnail"/>
+
+    <ImageView
+        android:layout_width="@dimen/ic_video_play"
+        android:layout_height="@dimen/ic_video_play"
+        android:src="@drawable/ic_video_play"
+        android:id="@+id/ic_video_play"
+        android:layout_centerInParent="true"
+        android:visibility="gone"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/gradient"
+        android:layout_alignParentBottom="true">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/media_count"
+            android:paddingLeft="@dimen/label_padding"
+            android:textColor="@android:color/white"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/group_name"
+            android:gravity="left"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:paddingLeft="@dimen/label_padding"
+            android:paddingBottom="@dimen/label_padding"
+            android:paddingRight="@dimen/label_padding"
+            android:textColor="@android:color/white"/>
+    </LinearLayout>
+</RelativeLayout>
