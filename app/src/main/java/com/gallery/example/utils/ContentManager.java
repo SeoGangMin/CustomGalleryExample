@@ -58,15 +58,8 @@ public class ContentManager {
 
         Uri queryUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
 
-        CursorLoader cursorLoader = new CursorLoader(
-                mContext,
-                queryUri,
-                projection,
-                null,
-                null, // Selection args (none).
-                MediaStore.Images.ImageColumns.DATE_TAKEN + " DESC" // Sort order.
-        );
-        Cursor cursor = cursorLoader.loadInBackground();
+        Cursor cursor = mContext.getContentResolver()
+                .query(queryUri, projection, null, null, MediaStore.Images.ImageColumns.DATE_TAKEN + " DESC");
 
         if(cursor.getCount() > 0){
             list = extractMediaObjectList(cursor);
@@ -105,16 +98,8 @@ public class ContentManager {
 
         Uri queryUri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
 
-        CursorLoader cursorLoader = new CursorLoader(
-                mContext,
-                queryUri,
-                projection,
-                null,
-                null,
-                MediaStore.Images.ImageColumns.DATE_TAKEN + " DESC" // Sort order.
-        );
-
-        Cursor cursor = cursorLoader.loadInBackground();
+        Cursor cursor = mContext.getContentResolver()
+                .query(queryUri, projection, null, null, MediaStore.Video.VideoColumns.DATE_TAKEN + " DESC");
 
         if(cursor.getCount() > 0){
             list = extractMediaObjectList(cursor);
@@ -145,20 +130,14 @@ public class ContentManager {
 
         Uri queryUri = MediaStore.Images.Thumbnails.EXTERNAL_CONTENT_URI;
 
-        CursorLoader cursorLoader = new CursorLoader(
-                mContext,
-                queryUri,
-                projection,
-                selection.toString(),
-                null, // Selection args (none).
-                null
-        );
-        Cursor cursor = cursorLoader.loadInBackground();
+        Cursor cursor = mContext.getContentResolver()
+                .query(queryUri, projection, selection.toString(), null, null);
 
         if(cursor.getCount() > 0){
             cursor.moveToFirst();
             thumbnailPath = cursor.getString(3);
         }
+        cursor.close();
 
         return thumbnailPath;
     }
@@ -229,20 +208,14 @@ public class ContentManager {
 
         Uri queryUri = MediaStore.Video.Thumbnails.EXTERNAL_CONTENT_URI;
 
-        CursorLoader cursorLoader = new CursorLoader(
-                mContext,
-                queryUri,
-                projection,
-                selection.toString(),
-                null, // Selection args (none).
-                null
-        );
-        Cursor cursor = cursorLoader.loadInBackground();
+        Cursor cursor = mContext.getContentResolver()
+                .query(queryUri, projection, selection.toString(), null, null);
 
         if(cursor.getCount() > 0){
             cursor.moveToFirst();
             thumbnailPath = cursor.getString(3);
         }
+        cursor.close();
 
         return thumbnailPath;
     }
@@ -304,92 +277,6 @@ public class ContentManager {
             return obj1.getDateTaken() > obj2.getDateTaken() ? -1 : obj1.getDateTaken() < obj2.getDateTaken() ? 1:0;
         }
     }
-
-
-
-//    /**
-//     * find media list from bucketId
-//     *
-//     * @param bucketId
-//     */
-//    private List<MediaContent> getContentFromBucket(long bucketId){
-//        List<MediaContent> list = null;
-//        String[] projection = {
-//                MediaStore.Files.FileColumns._ID,
-//                MediaStore.Files.FileColumns.DATA,
-//                MediaStore.Files.FileColumns.DATE_ADDED,
-//                MediaStore.Files.FileColumns.MEDIA_TYPE,
-//                MediaStore.Files.FileColumns.MIME_TYPE,
-//                MediaStore.Files.FileColumns.TITLE,
-//                MediaStore.Files.FileColumns.DATE_MODIFIED,
-//                MediaStore.Files.FileColumns.PARENT
-//        };
-//
-//        // Return only video and image metadata.
-//
-//        StringBuffer selection = new StringBuffer();
-//        selection.append(MediaStore.Files.FileColumns.MEDIA_TYPE);
-//        selection.append("=");
-//        selection.append(MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE);
-//        selection.append(" OR ");
-//        selection.append(MediaStore.Files.FileColumns.MEDIA_TYPE);
-//        selection.append("=");
-//        selection.append(MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO);
-//        selection.append(" AND ");
-//        selection.append(MediaStore.Files.FileColumns.PARENT);
-//        selection.append("=");
-//        selection.append(bucketId);
-//
-//        Uri queryUri = MediaStore.Files.getContentUri("external");
-//
-//        CursorLoader cursorLoader = new CursorLoader(
-//                mContext,
-//                queryUri,
-//                projection,
-//                selection.toString(),
-//                null, // Selection args (none).
-//                MediaStore.Files.FileColumns.DATE_MODIFIED + " DESC" // Sort order.
-//        );
-//
-//        Cursor cursor = cursorLoader.loadInBackground();
-//
-//        if(cursor.getCount() > 0){
-//            list = extractMediaList(cursor);
-//        }
-//
-//        return list;
-//    }
-//
-//    /**
-//     * extract mediaList from cursor
-//     *
-//     * @param cursor
-//     */
-//    public static List<MediaContent> extractMediaList(Cursor cursor) {
-//        List<MediaContent> list = new ArrayList<MediaContent>();
-//        if (cursor != null && cursor.moveToFirst()) {
-//            do {
-//                long id       = cursor.getLong(0);
-//                String filePath = cursor.getString(1);
-//                int mediaType   = cursor.getInt(3);
-//                String mimeType = cursor.getString(4);
-//                String title    = cursor.getString(5);
-//                long createdDt  = cursor.getLong(6);
-//
-//                MediaContent mediaContent = new MediaContent();
-//                mediaContent.setId(id);
-//                mediaContent.setFilePath(filePath);
-//                mediaContent.setMediaType(mediaType);
-//                mediaContent.setMimeType(mimeType);
-//                mediaContent.setTitle(title);
-//                mediaContent.setCreatedDt(createdDt);
-//
-//                list.add(mediaContent);
-//            } while (cursor.moveToNext());
-//            cursor.close();
-//        }
-//        return list;
-//    }
 
 
 }

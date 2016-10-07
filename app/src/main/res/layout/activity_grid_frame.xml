@@ -12,5 +12,27 @@
         android:layout_height="match_parent"
         android:id="@+id/grid_view"
         android:numColumns="@integer/grid_column_count"
-        android:scrollbars="none"/>
+        android:visibility="gone"
+        />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/progress_layout"
+        android:orientation="vertical"
+        android:layout_centerInParent="true">
+        <ProgressBar
+            android:indeterminate="true"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminateTint="@color/colorPrimary"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/loading_text"/>
+
+    </LinearLayout>
+
 </RelativeLayout>

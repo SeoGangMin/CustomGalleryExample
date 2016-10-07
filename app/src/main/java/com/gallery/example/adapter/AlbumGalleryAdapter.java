@@ -15,9 +15,11 @@ import com.gallery.example.R;
 import com.gallery.example.models.MediaObject;
 import com.gallery.example.utils.MediaType;
 import com.gallery.example.utils.Util;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -33,7 +35,7 @@ public class AlbumGalleryAdapter  extends BaseGalleryAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         final ViewHolder holder;
         final MediaObject item = (MediaObject) mItems.get(position);
 
@@ -42,10 +44,6 @@ public class AlbumGalleryAdapter  extends BaseGalleryAdapter {
             convertView.setLayoutParams( new GridView.LayoutParams( SQAURE_SIZE, SQAURE_SIZE ) );
 
             holder = new ViewHolder(convertView);
-
-            if(MediaType.VIDEO.toString().equals(item.getMediaType())){
-                holder.icVideoPlay.setVisibility(View.VISIBLE);
-            }
 
             convertView.setTag(holder);
         }else{
@@ -56,14 +54,33 @@ public class AlbumGalleryAdapter  extends BaseGalleryAdapter {
 
         if(MediaType.VIDEO.toString().equals(item.getMediaType())){
             filePath = item.getThumbnailPath();
-//            holder.icVideoPlay.setVisibility(View.VISIBLE);
+            holder.icVideoPlay.setVisibility(View.VISIBLE);
+        }else{
+            holder.icVideoPlay.setVisibility(View.GONE);
+        }
+
+        if(item.isSelected()){
+            holder.icChecked.setImageResource(R.drawable.ic_check_enabled);
+        }else{
+            holder.icChecked.setImageResource(R.drawable.ic_check_disabled);
         }
 
         Picasso.with(mContext)
                 .load(new File(filePath))
                 .resize(SQAURE_SIZE, SQAURE_SIZE)
+                .error(R.drawable.ic_warning)
                 .centerCrop()
-                .into(holder.thumbnail);
+                .into(holder.thumbnail, new Callback() {
+                    @Override
+                    public void onSuccess() {
+
+                    }
+
+                    @Override
+                    public void onError() {
+                        ((MediaObject) mItems.get(position)).setError(true);
+                    }
+                });
 
         return convertView;
     }
@@ -71,10 +88,12 @@ public class AlbumGalleryAdapter  extends BaseGalleryAdapter {
     static class ViewHolder{
         ImageView thumbnail;
         ImageView icVideoPlay;
+        ImageView icChecked;
 
         public ViewHolder(View view){
             this.thumbnail   = (ImageView) view.findViewById(R.id.thumbnail);
             this.icVideoPlay = (ImageView) view.findViewById(R.id.ic_video_play);
+            this.icChecked   = (ImageView) view.findViewById(R.id.ic_checked);
         }
     }
 

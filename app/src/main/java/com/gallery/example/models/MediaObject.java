@@ -29,6 +29,10 @@ public class MediaObject{
 
     private int orientation; //if image
 
+    private boolean isSelected;
+
+    private boolean isError;
+
     public MediaObject() {}
 
     public long getBucketId() {
@@ -125,5 +129,21 @@ public class MediaObject{
 
     public void setThumbnailPath(String thumbnailPath) {
         this.thumbnailPath = thumbnailPath;
+    }
+
+    public boolean isSelected() {
+        return isSelected;
+    }
+
+    public void setSelected(boolean selected) {
+        isSelected = selected;
+    }
+
+    public boolean isError() {
+        return isError;
+    }
+
+    public void setError(boolean error) {
+        isError = error;
     }
 }
